@@ -70,7 +70,7 @@ function update_stats($person, $period)
 	if (!$period)
 		$period = calculate_period(date("Y-m-d"));
 	
-	$log = get_log($person, $period);
+	$log = get_log($person, $period, "ASC");
 	$currentChainLength = 0;
 	$lastDay = -100;
 	
@@ -91,14 +91,14 @@ function update_stats($person, $period)
 				//print "$dayNumber : chainLength == $currentChainLength (init)<br/>";
 				
 			}
-			else if ($dayNumber == ($lastDay - 1))
+			else if ($dayNumber == ($lastDay + 1))
 			{
 				$currentChainLength++;
 				$lastDay = $dayNumber;
 				//print "$dayNumber : chainLength == $currentChainLength (extend)<br/>";
 				
 			}
-			else if ($dayNumber != ($lastDay - 1))
+			else if ($dayNumber != ($lastDay + 1))
 			{
 				$chains[] = $currentChainLength;
 				$currentChainLength = 1;
@@ -165,7 +165,7 @@ function display_log($person, $period)
 	if (!$period)
 		$period = calculate_period(date("Y-m-d"));
 
-	$log = get_log($person, $period);
+	$log = get_log($person, $period, "DESC");
 
 	echo "<h3>Workouts for $person</h3>";
 	echo "<table class='table table-striped'>";	
@@ -306,7 +306,7 @@ function display_footer()
 }
 
 
-function get_log($person, $period)
+function get_log($person, $period, $direction)
 {
 	global $username;
 	global $password;
@@ -317,7 +317,9 @@ function get_log($person, $period)
 	
 	if (!$period)
 		$period = calculate_period(date("Y-m-d"));	
-	
+	if (!$direction)
+		$direction = "desc";
+		
 	global $cutoffDates;
 	
 	$startDate = $cutoffDates[$period];
@@ -326,7 +328,7 @@ function get_log($person, $period)
 	$person = safe($person);
 	
 	$workoutQuery = "select * from `actions` where `person`='$person'
-		and `time`>='$startDate' and `time` < '$endDate' order by `time` desc";
+		and `time`>='$startDate' and `time` < '$endDate' order by `time` $direction";
 	//print $workoutQuery;
 	
 	$result = mysql_query($workoutQuery);
