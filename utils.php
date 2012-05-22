@@ -91,14 +91,14 @@ function update_stats($person, $period)
 				//print "$dayNumber : chainLength == $currentChainLength (init)<br/>";
 				
 			}
-			else if ($dayNumber == ($lastDay +1))
+			else if ($dayNumber == ($lastDay - 1))
 			{
 				$currentChainLength++;
 				$lastDay = $dayNumber;
 				//print "$dayNumber : chainLength == $currentChainLength (extend)<br/>";
 				
 			}
-			else if ($dayNumber != ($lastDay + 1))
+			else if ($dayNumber != ($lastDay - 1))
 			{
 				$chains[] = $currentChainLength;
 				$currentChainLength = 1;
@@ -168,7 +168,7 @@ function display_log($person, $period)
 	$log = get_log($person, $period);
 
 	echo "<h3>Workouts for $person</h3>";
-	echo "<table>";	
+	echo "<table class='table table-striped'>";	
 	if ($log)
 	{
 		while ($row = mysql_fetch_assoc($log))
@@ -207,7 +207,7 @@ function display_standings($period)
 	$startDate = date("n/d", $cutoffDates[$period]);
 	$endDate = date("n/d", $cutoffDates[($period+1)] - 1);
 	echo "<h3>$startDate - $endDate: Standings</h3>";
-	echo "<table><tr><th></th><th></th><th>Longest</th><th>Current</th><th>Total</th></tr>";
+	echo "<table class='table table-striped'><tr><th></th><th>Longest</th><th>Current</th><th>Total</th></tr>";
 	
 	$didSomething = array();
 	if ($standings)
@@ -216,10 +216,10 @@ function display_standings($period)
 		{
 			$link = "<a href=reportPerson.php?period=$period&person=" . $row['person'] . 
 						">" . $row['person'] . "</a>";
-			echo "<tr><td align=right valign=top>" . $link . "</td><td>&nbsp;</td>".
-			"<td align=right valign=top>" . 
-				$row['longest'] . "</td><td align=right valign=top>" . 
-				$row['current'] . "</td><td align=right valign=top>" .
+			echo "<tr><td align=right valign=top>" . $link . "</td>".
+			"<td align=center valign=top>" . 
+				$row['longest'] . "</td><td align=center valign=top>" . 
+				$row['current'] . "</td><td align=center valign=top>" .
 				$row['actions'] . "</td></tr>";
 			$didSomething[] = $row['person'];
 		}
@@ -246,7 +246,7 @@ function display_recents()
 	$recents = get_recents();
 	
 	
-	echo "<h4>Recent activities</h4><table>";
+	echo "<h4>Recent activities</h4><table class='table table-striped'>";
 	if ($recents)
 	{
 		while ($row = mysql_fetch_assoc($recents))
@@ -262,7 +262,7 @@ function display_recents()
 			  $description = "<a href='" . $row['url'] . "'>$description</a>";
 			}
 			
-			$description = $description  . " [" . $row['person'] . "]";
+			$description = $description  . " </td><td>" . $row['person'] . "";
 			
 			echo "<tr>" . $extraInfo . "<td valign=top>" . 
 				date("n/d",$row['time']) . "</td><td valign=top>" . $description .
@@ -283,15 +283,26 @@ function display_header()
 
 <title>Workouts</title>
 <meta name="viewport" content="user-scalable=no, width=device-width" />
+<link rel="stylesheet" href="twitter-bootstrap/docs/assets/css/bootstrap.css">
 </head>
 <body>
+<div class="container-fluid">
+  <div class="span3">
+    <ul class="nav nav-tabs">
+      <li><a href="index.php">Log Workout</a></li>
+      <li class="active"><a href="standings.php">Standings</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container-fluid">  
 ';
 
 }
 
 function display_footer()
 {
-	echo '</body></html>';
+	echo '</div></body></html>';
 }
 
 
@@ -315,7 +326,7 @@ function get_log($person, $period)
 	$person = safe($person);
 	
 	$workoutQuery = "select * from `actions` where `person`='$person'
-		and `time`>='$startDate' and `time` < '$endDate' order by `time` asc";
+		and `time`>='$startDate' and `time` < '$endDate' order by `time` desc";
 	//print $workoutQuery;
 	
 	$result = mysql_query($workoutQuery);

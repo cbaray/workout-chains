@@ -2,6 +2,8 @@
 
 include('utils.php');
 
+date_default_timezone_set('America/Los_Angeles');
+
 $day = date("j");
 $month = date("n");
 $cookiedPerson = $_COOKIE["person"];
@@ -13,17 +15,38 @@ $cookiedPerson = $_COOKIE["person"];
 
 <title>Workouts</title>
 <meta name="viewport" content="user-scalable=no, width=device-width" />
+<link rel="stylesheet" href="twitter-bootstrap/docs/assets/css/bootstrap.css">
+
+<style type="text/css">
+
+input:not([type="image"]), textarea {
+    box-sizing: content-box;
+}
+
+</style>
+
 </head>
 
 <body OnLoad="document.didIt.workout.focus();">
 
-<form name="didIt" method="post" action="didIt.php">
+<div class="container-fluid">
+  <div class="span3">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="index.php">Log Workout</a></li>
+      <li><a href="standings.php">Standings</a></li>
+    </ul>
+  </div>
+</div>
 
-<table>
-<tr>
-<td>Person:</td>
-<td>
-<select name="person">
+<div class="container-fluid">  
+
+<form name="didIt" method="post" action="didIt.php" class="well form-inline">
+<fieldset>
+
+<div class="control-group">
+  <label class="control-label" for="select01">Person:</label>
+  <div class="controls">
+    <select name="person" id="select01">
 <?php
 
 global $people;
@@ -35,43 +58,46 @@ foreach ($people as $person)
 	$selected = "selected ";
   }
   
-  echo '<option ' . $selected . 'value="' .
-  	$person . '">' . $person .'</option>\r\n';
+  echo '       <option ' . $selected . 'value="' .
+  	$person . '">' . $person .'</option>';
   	
 }
 
 ?>
-</select>
-</td>
+    </select>
+  </div>
+</div>
 
-<tr>
-<td>Date:</td>
-<td>
-<input type=text size=2 name='month' value="<?php print $month ?>"/>
-<input type=text size=2 name='day' value = "<?php print $day ?>"/>
-</td>
-</tr>
+<div class="control-group">
+  <label class="control-label">Date:</label>
+  <div class="controls">
+    <input type=text id='month' name='month' class='input-small' value="<?php print $month ?>"/>
+    <input type=text id='day' name='day' class='input-small' value = "<?php print $day ?>"/>
+  </div>
+</div>
 
-<tr>
-<td>Workout: </td>
-<td><input type=text size=25 name='workout'/></td>
-</tr>
+<div class="control-group">
+  <label class="control-label">Workout: </label>
+  <div class="controls">
+    <input type=text id='workout' name='workout' class='input-large'/>
+  </div>
+</div>
 
-<tr>
-<td>URL: </td>
-<td><input type=text size=25 name='url'/></td>
-</tr>
+<div class="control-group">
+  <label class="control-label">URL: </label>
+  <div class="controls">
+    <input type=text id='url' name='url' class='input-large' />
+  </div>
+</div>
 
-<tr>
-<td> &nbsp;</td>
-<td><input type=submit name=submit value="Did it"/>
-</td>
-</tr>
+<div class="form-actions">
+  <button type="submit" class="btn btn-primary">Did it</button>
+</div>
 
-</table>
+</fieldset>
 </form>
 
-<a href="standings.php">Standings</a>
 
+</div>
 </body>
 </html>

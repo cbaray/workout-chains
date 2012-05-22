@@ -23,13 +23,7 @@ setcookie("person", $person, time()+60*60*24*300 );
 display_header();
 display_standings(null);
 
-display_log($person, null);
-
-
-//echo "<br/>4-15:" . strtotime("2012-04-15");
-//echo "<br/>5-15:" . strtotime("2012-05-15");
-//echo "<br/>6-15:" . strtotime("2012-06-15");
-//echo "<br/>7-15:" . strtotime("2012-07-15");
+display_recents();
 
 display_footer();
 
