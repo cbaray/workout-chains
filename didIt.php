@@ -18,7 +18,7 @@ $url = ($_POST['url']);
 	
 insert_workout($person, $time, $workout, $url);
 
-setcookie("person", $person, time()+60*60*24*30 );
+setcookie("person", $person, time()+60*60*24*300 );
 
 display_header();
 display_standings(null);

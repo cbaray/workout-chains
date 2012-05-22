@@ -237,9 +237,43 @@ function display_standings($period)
 		}
 	}
 	
+	echo "</table>";
 	
+}
+
+function display_recents()
+{
+	$recents = get_recents();
+	
+	
+	echo "<h4>Recent activities</h4><table>";
+	if ($recents)
+	{
+		while ($row = mysql_fetch_assoc($recents))
+		{
+			$extraInfo = "";
+			if ($debug)
+				$extraInfo = "<td>" . date("z", $row['time']) . "</td>";
+			
+			$description = $row['description'];
+			  
+			if ($row['url'])
+			{
+			  $description = "<a href='" . $row['url'] . "'>$description</a>";
+			}
+			
+			$description = $description  . " [" . $row['person'] . "]";
+			
+			echo "<tr>" . $extraInfo . "<td valign=top>" . 
+				date("n/d",$row['time']) . "</td><td valign=top>" . $description .
+				"</td></tr>";
+		}
+	}
+
 	echo "</table>";
 }
+
+
 
 function display_header()
 {
@@ -314,7 +348,29 @@ function get_standings($period)
 	{	
 		return $result;
 	}
-	
 }
+
+
+function get_recents()
+{
+	global $username;
+	global $password;
+	global $database;
+
+	mysql_connect(localhost,$username, $password);
+	@mysql_select_db($database) or die( "Unable to select database");
+	
+	$time = strtotime(date("Y-m-d", time())) - (60 * 60 * 24) ;
+	
+	$recentsQuery = "SELECT * FROM  `actions` WHERE  `time` >=$time
+			ORDER BY  `actions`.`time` desc,   `actions`.`person` ASC ";
+
+	$result = mysql_query($recentsQuery);
+	
+	//print $recentsQuery;
+	
+	return $result;			
+}
+
 
 ?>

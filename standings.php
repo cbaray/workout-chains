@@ -18,6 +18,8 @@ if ($doUpdates)
 display_header();
 display_standings($period);
 
+display_recents();
+
 //echo "<br/>4-15:" . strtotime("2012-04-15");
 //echo "<br/>5-15:" . strtotime("2012-05-15");
 //echo "<br/>6-15:" . strtotime("2012-06-15");
