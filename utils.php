@@ -207,7 +207,10 @@ function display_standings($period)
 	$startDate = date("n/d", $cutoffDates[$period]);
 	$endDate = date("n/d", $cutoffDates[($period+1)] - 1);
 	echo "<h3>$startDate - $endDate: Standings</h3>";
-	echo "<table class='table table-striped'><tr><th></th><th>Longest</th><th>Current</th><th>Total</th></tr>";
+	echo "<table class='table table-striped' style='max-width: 500px'><tr><th></th>
+	<th style='text-align: right'>Longest</th>
+	<th style='text-align: right'>Current</th>
+	<th style='text-align: right'>Total</th></tr>";
 	
 	$didSomething = array();
 	if ($standings)
@@ -216,10 +219,10 @@ function display_standings($period)
 		{
 			$link = "<a href=reportPerson.php?period=$period&person=" . $row['person'] . 
 						">" . $row['person'] . "</a>";
-			echo "<tr><td align=right valign=top>" . $link . "</td>".
-			"<td align=center valign=top>" . 
-				$row['longest'] . "</td><td align=center valign=top>" . 
-				$row['current'] . "</td><td align=center valign=top>" .
+			echo "<tr><td  valign=top>" . $link . "</td>".
+			"<td style='text-align: right' valign=top>" . 
+				$row['longest'] . "</td><td style='text-align: right' valign=top>" . 
+				$row['current'] . "</td><td style='text-align: right' valign=top>" .
 				$row['actions'] . "</td></tr>";
 			$didSomething[] = $row['person'];
 		}
@@ -285,7 +288,7 @@ function display_header()
 <meta name="viewport" content="user-scalable=no, width=device-width" />
 <link rel="stylesheet" href="twitter-bootstrap/docs/assets/css/bootstrap.css">
 </head>
-<body>
+<body style="max-width: 760px">
 <div class="container-fluid">
   <div class="span3">
     <ul class="nav nav-tabs">
