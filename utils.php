@@ -177,7 +177,7 @@ function display_log($person, $period)
 			if ($debug)
 				$extraInfo = "<td>" . date("z", $row['time']) . "</td>";
 			
-			$description = $row['description'];
+			$description = stripslashes($row['description']);
 			if ($row['url'])
 			{
 			  $description = "<a href='" . $row['url'] . "'>$description</a>";
@@ -206,7 +206,7 @@ function display_standings($period)
 	global $cutoffDates;
 	$startDate = date("n/d", $cutoffDates[$period]);
 	$endDate = date("n/d", $cutoffDates[($period+1)] - 1);
-	echo "<h3>$startDate - $endDate: Standings</h3>";
+	echo "<h3>$startDate - $endDate:</h3>";
 	echo "<table class='table table-striped' style='max-width: 500px'><tr><th></th>
 	<th style='text-align: right'>Longest</th>
 	<th style='text-align: right'>Current</th>
@@ -258,7 +258,7 @@ function display_recents()
 			if ($debug)
 				$extraInfo = "<td>" . date("z", $row['time']) . "</td>";
 			
-			$description = $row['description'];
+			$description = stripslashes($row['description']);
 			  
 			if ($row['url'])
 			{
@@ -278,7 +278,7 @@ function display_recents()
 
 
 
-function display_header()
+function display_header($selectedTab)
 {
 	echo '<html>
 <head>
@@ -286,15 +286,54 @@ function display_header()
 
 <title>Workouts</title>
 <meta name="viewport" content="user-scalable=no, width=device-width" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
 <link rel="stylesheet" href="twitter-bootstrap/docs/assets/css/bootstrap.css">
+<style type="text/css">
+
+input:not([type="image"]), textarea {
+    box-sizing: content-box;
+}
+
+</style>
+
 </head>
 <body style="max-width: 760px">
 <div class="container-fluid">
-  <div class="span3">
-    <ul class="nav nav-tabs">
-      <li><a href="index.php">Log Workout</a></li>
-      <li class="active"><a href="standings.php">Standings</a></li>
-    </ul>
+  <div class="span4">
+    <ul class="nav nav-tabs">';
+    
+if ($selectedTab == "log")
+{
+	echo '      <li class="active"><a href="index.php">Log Workout</a></li>';
+}
+else
+{
+	echo '      <li><a href="index.php">Log Workout</a></li>';
+}
+
+if ($selectedTab == "standings")
+{
+	echo '      <li class="active"><a href="standings.php">Standings</a></li>';
+
+}
+else
+{
+	echo '      <li><a href="standings.php">Standings</a></li>';
+}
+
+if ($selectedTab == "history")
+{
+	echo '      <li class="active"><a href="history.php">History</a></li>';
+}
+else
+{
+	echo '      <li><a href="history.php">History</a></li>';
+}
+
+    
+    
+
+echo '    </ul>
   </div>
 </div>
 

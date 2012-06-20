@@ -8,7 +8,11 @@ $day = date("j");
 $month = date("n");
 $cookiedPerson = $_COOKIE["person"];
 
+
+display_header("log");
 ?>
+
+<!--
 <html>
 <head>
 <link rel="apple-touch-icon" href="/chains/apple-touch-icon.png" />
@@ -27,16 +31,18 @@ input:not([type="image"]), textarea {
 
 </head>
 
-<body OnLoad="document.didIt.workout.focus();">
 
 <div class="container-fluid">
-  <div class="span3">
+  <div class="span4">
     <ul class="nav nav-tabs">
       <li class="active"><a href="index.php">Log Workout</a></li>
       <li><a href="standings.php">Standings</a></li>
+      <li><a href="history.php">History</a></li>
     </ul>
   </div>
 </div>
+
+-->
 
 <div class="container-fluid">  
 
@@ -97,7 +103,8 @@ foreach ($people as $person)
 </fieldset>
 </form>
 
+<?php
 
-</div>
-</body>
-</html>
+display_footer()
+?>
+

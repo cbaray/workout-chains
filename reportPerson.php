@@ -5,7 +5,7 @@ include('utils.php');
 $person = ($_GET['person']);
 $period = ($_GET['period']);
 
-display_header();
+display_header("standings");
 
 display_standings($period);
 
